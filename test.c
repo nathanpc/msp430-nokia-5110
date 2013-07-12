@@ -40,7 +40,8 @@ void main() {
 
 	// Clear just that row and write some text.
 	lcd_clear_row(1);
-	lcd_print("@nathanpc");
+	lcd_putc('@');  // If all you want is a single character.
+	lcd_print("nathanpc");
 
 	// And more text!
 	lcd_set_pos(0, 3);
