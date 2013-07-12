@@ -46,6 +46,13 @@
 #define ROTATE_180 (FLIP_H | FLIP_V)
 
 
+// Function Prototypes.
+void lcd_setup();
+void lcd_init();
+
+void lcd_command(const char command, const char data);
+
+
 static const char font[][5] = {		// basic font
 	 {0x00, 0x00, 0x00, 0x00, 0x00} // 20  
 	,{0x00, 0x00, 0x5f, 0x00, 0x00} // 21 !

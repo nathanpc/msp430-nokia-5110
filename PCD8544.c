@@ -28,18 +28,51 @@ void lcd_setup() {
 	P2OUT |= EN;
 }
 
+/**
+ *  Initializes the LCD with some defaults.
+ */
 void lcd_init() {
+	lcd_command(PCD8544_FUNCTIONSET | PCD8544_EXTINSTRUCTIONS, 0);
+	lcd_command(PCD8544_SETVOP | 0x3F, 0);
+	lcd_command(PCD8544_SETTEMP | 0x02, 0);
+	lcd_command(PCD8544_SETBIAS | 0x03, 0);
+	lcd_command(PCD8544_FUNCTIONSET, 0);
+	lcd_command(PCD8544_DISPLAYCONTROL | PCD8544_DISPLAYNORMAL, 0);
 }
 
 /**
- *  Send a command to the LCD controller. (emulating SPI)
+ *  Send a command to the LCD controller. (Simulating SPI)
  *
  *  @param command A command to send.
  *  @param data Some data to be sent.
  */
 void lcd_command(const char command, const char data) {
-}
+	char dbyte = (command | data);  // Combine both into one byte to be sent.
 
+	P2OUT &= ~SCLK;  // Put the clock line LOW to start.
+	P2OUT &= ~EN;    // Pull the EN pin LOW to start sending a packet.
+
+	// The packet must be most significant bit first, so we need to send the
+	// data from bits 7 to 0.
+	for (int i = 7; i >= 0; i--) {
+		// Check if it's time to set the Data pin and if it'll be needed.
+		if ((i == 0) & (data != 0)) {
+			P2OUT |= D_C;
+		}
+
+		// Set MOSI according to bit.
+		bit_to_pin(dbyte, i, &P2OUT, MOSI);
+
+		// Send a clock pulse.
+		P2OUT |= SCLK;  // Set clock HIGH to send the bit.
+		P2OUT &= ~SCLK;  // Set the clock back to LOW and prepare for the next bit.
+	}
+
+	// Finish the packet and clean the mess.
+	P2OUT |= EN;
+	P2OUT &= ~(SCLK + MOSI + D_C);
+}
+/*
 void writeStringToLCD(const char *string) {
     while(*string) {
         writeCharToLCD(*string++);
@@ -148,4 +181,4 @@ void initLCD() {
     writeToLCD(LCD5110_COMMAND, PCD8544_SETBIAS | 0x03);
     writeToLCD(LCD5110_COMMAND, PCD8544_FUNCTIONSET);
     writeToLCD(LCD5110_COMMAND, PCD8544_DISPLAYCONTROL | PCD8544_DISPLAYNORMAL);
-}
+	}*/
