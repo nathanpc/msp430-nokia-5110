@@ -22,20 +22,16 @@ void main() {
 	BCSCTL1 = CALBC1_1MHZ;     // 1MHz clock.
 	DCOCTL = CALDCO_1MHZ;
 	BCSCTL2 &= ~(DIVS_3);      // SMCLK = DCO = 1MHz.
-    
-    //adc_setup();
+
+	//adc_setup();
+
+	// Setup the LCD stuff.
 	lcd_setup();
-
-    //__delay_cycles(500000);
-	delay_ms(1);
+	delay_ms(1);  // Just to make sure the LCD is ready
 	lcd_init();
-    //clearLCD();
-	//__delay_cycles(1000000);
-	//lcd_putc('P');
-	//lcd_command(0, 0b11111111);
 	lcd_clear();
-	lcd_command(0, 0b10101010);
 
+	lcd_print("Hello, world!");
 	while (TRUE) {
 /*
 		if (value < 85) {

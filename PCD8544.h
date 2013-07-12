@@ -48,6 +48,8 @@ void lcd_init();
 void lcd_command(const char command, const char data);
 
 void lcd_putc(const char c);
+void lcd_print(const char *string);
+
 void lcd_clear();
 void lcd_set_pos(unsigned int x, unsigned int y);
 

@@ -95,6 +95,12 @@ void lcd_putc(const char c) {
 	lcd_command(0, 0);
 }
 
+void lcd_print(const char *string) {
+	while (*string) {
+		lcd_putc(*string++);
+	}
+}
+
 /**
  *  Clears the screen
  */
