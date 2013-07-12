@@ -123,6 +123,24 @@ void lcd_clear() {
 }
 
 /**
+ *  Clears a row of the display.
+ *
+ *  @param row A display row (Y address).
+ */
+void lcd_clear_row(unsigned int row) {
+	// Start from the beginning of the row.
+	lcd_set_pos(0, row);
+
+	// Fill the row with blank pixels.
+	for (unsigned int i = 0; i < LCDWIDTH; i++) {
+		lcd_command(0, 0);
+	}
+
+	// Go back to where everything started.
+	lcd_set_pos(0, row);
+}
+
+/**
  *  Sets the position of the memory cursor in the LCD controller.
  *
  *  @param x The X position (0 >= X <= 83).
