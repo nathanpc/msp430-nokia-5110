@@ -95,6 +95,11 @@ void lcd_putc(const char c) {
 	lcd_command(0, 0);
 }
 
+/**
+ *  Prints a string on the screen.
+ *
+ *  @param string A string of characters.
+ */
 void lcd_print(const char *string) {
 	while (*string) {
 		lcd_putc(*string++);
