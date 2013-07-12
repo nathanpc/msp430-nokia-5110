@@ -24,7 +24,27 @@ void main() {
 	lcd_init();
 	lcd_clear();
 
+	// A simple string print.
 	lcd_print("Hello, world!");
+
+	// Another example string.
+	lcd_set_pos(0, 1);  // Going to the second row.
+	lcd_print("Nathan Campos");
+
+	// A simple bar.
+	lcd_set_pos(0, 1);
+	for (unsigned int i = 0; i < 84; i++) {
+		lcd_command(0, 0b11111111);
+		delay_ms(10);
+	}
+
+	// Clear just that row and write some text.
+	lcd_clear_row(1);
+	lcd_print("@nathanpc");
+
+	// And more text!
+	lcd_set_pos(0, 3);
+	lcd_print("http://about.me/nathanpc");
 
 	while (TRUE) {
 	}
