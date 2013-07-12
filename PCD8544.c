@@ -80,6 +80,11 @@ void lcd_command(const char command, const char data) {
 	P2OUT &= ~(SCLK + MOSI + D_C);
 }
 
+/**
+ *  Prints a character on the screen.
+ *
+ *  @param c A character.
+ */
 void lcd_putc(const char c) {
 	// Print each of the 5 collumns of pixels in the font.
 	for (unsigned int i = 0; i < 5; i++) {
@@ -90,11 +95,32 @@ void lcd_putc(const char c) {
 	lcd_command(0, 0);
 }
 
+/**
+ *  Clears the screen
+ */
 void lcd_clear() {
+	// Start from (0,0).
+	lcd_set_pos(0, 0);
+
 	// Fill the whole screen with blank pixels.
 	for (unsigned int i = 0; i < (LCDWIDTH * (LCDHEIGHT / 8)); i++) {
 		lcd_command(0, 0);
 	}
+
+	// Go back to (0,0).
+	lcd_set_pos(0, 0);
+}
+
+/**
+ *  Sets the position of the memory cursor in the LCD controller.
+ *
+ *  @param x The X position (0 >= X <= 83).
+ *  @param y The Y position (0 >= Y <= 5).
+ */
+void lcd_set_pos(unsigned int x, unsigned int y) {
+	// Pretty straight forward huh?
+	lcd_command(PCD8544_SETXADDR, x);
+	lcd_command(PCD8544_SETYADDR, y);
 }
 
 /*

@@ -49,6 +49,7 @@ void lcd_command(const char command, const char data);
 
 void lcd_putc(const char c);
 void lcd_clear();
+void lcd_set_pos(unsigned int x, unsigned int y);
 
 // Fonts.
 static const char font[][5] = {		// basic font

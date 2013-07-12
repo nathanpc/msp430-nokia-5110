@@ -33,14 +33,18 @@ void main() {
 	//__delay_cycles(1000000);
 	//lcd_putc('P');
 	//lcd_command(0, 0b11111111);
+	lcd_clear();
+	lcd_command(0, 0b10101010);
 
 	while (TRUE) {
-		if (value <= 85) {
+/*
+		if (value < 85) {
 			lcd_command(0, 0b11100111);
 		} else {
 			delay_ms(3000);
 		}
-		value++;
+		value++;*/
+
     	/*__delay_cycles(1000000);                   // Wait for ADC Ref to settle 
     	clearLCD();
     	ADC10CTL0 |= ENC + ADC10SC;             // Sampling and conversion start
