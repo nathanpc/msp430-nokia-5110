@@ -8,7 +8,6 @@
 #ifndef PCD8544_H_
 #define PCD8544_H_
 
-
 // Function Set bits (PD, V, H).
 #define PCD8544_POWERDOWN       0b00000100
 #define PCD8544_ENTRYMODE_V     0b00000010
@@ -31,15 +30,6 @@
 #define PCD8544_SETBIAS 0b00010000
 #define PCD8544_SETVOP  0b10000000
 
-//transform
-#define NONE 0x00
-#define FLIP_H 0x01
-#define FLIP_V 0x02
-#define ROTATE 0x04 // 90 deg CW
-#define ROTATE_90_CW ROTATE
-#define ROTATE_90_CCW (FLIP_H | FLIP_V | ROTATE)
-#define ROTATE_180 (FLIP_H | FLIP_V)
-
 
 // Function Prototypes.
 void lcd_setup();
@@ -51,6 +41,8 @@ void lcd_putc(const char c);
 void lcd_print(const char *string);
 
 void lcd_clear();
+void lcd_clear_row(unsigned int row);
+
 void lcd_set_pos(unsigned int x, unsigned int y);
 
 // Fonts.
