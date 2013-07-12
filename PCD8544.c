@@ -5,6 +5,27 @@
  *  @author Nathan Campos <nathanpc@dreamintech.net>
  */
 
+#include "PCD8544.h"
+#include <msp430g2553.h>
+
+// Helpers.
+#include "boolean.h"
+#include "delay.h"
+#include "bitio.h"
+
+#define SCLK BIT0
+#define MOSI BIT1
+#define D_C  BIT2
+#define EN   BIT3
+
+void lcd_setup() {
+	P2DIR |= (SCLK + MOSI + D_C + EN);
+	P2OUT &= ~(SCLK + MOSI + D_C + EN);
+}
+
+void lcd_init() {
+}
+
 void writeStringToLCD(const char *string) {
     while(*string) {
         writeCharToLCD(*string++);
