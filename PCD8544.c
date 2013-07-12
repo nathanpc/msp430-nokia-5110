@@ -13,10 +13,16 @@
 #include "delay.h"
 #include "bitio.h"
 
+// Pins.
 #define SCLK BIT0
 #define MOSI BIT1
 #define D_C  BIT2
 #define EN   BIT3
+
+// Properties.
+#define LCDWIDTH  84
+#define LCDHEIGHT 48
+#define LCDAREA   LCDWIDTH * LCDHEIGHT
 
 /**
  *  Setup the pins for communication with the LCD driver.
@@ -47,7 +53,8 @@ void lcd_init() {
  *  @param data Some data to be sent.
  */
 void lcd_command(const char command, const char data) {
-	char dbyte = (command | data);  // Combine both into one byte to be sent.
+	// Combine both into one byte to be sent.
+	char dbyte = (command | data);
 
 	P2OUT &= ~SCLK;  // Put the clock line LOW to start.
 	P2OUT &= ~EN;    // Pull the EN pin LOW to start sending a packet.
@@ -56,7 +63,7 @@ void lcd_command(const char command, const char data) {
 	// data from bits 7 to 0.
 	for (int i = 7; i >= 0; i--) {
 		// Check if it's time to set the Data pin and if it'll be needed.
-		if ((i == 0) & (data != 0)) {
+		if ((i == 0) & (command == 0)) {
 			P2OUT |= D_C;
 		}
 
@@ -64,7 +71,7 @@ void lcd_command(const char command, const char data) {
 		bit_to_pin(dbyte, i, &P2OUT, MOSI);
 
 		// Send a clock pulse.
-		P2OUT |= SCLK;  // Set clock HIGH to send the bit.
+		P2OUT |= SCLK;   // Set clock HIGH to send the bit.
 		P2OUT &= ~SCLK;  // Set the clock back to LOW and prepare for the next bit.
 	}
 
@@ -72,6 +79,24 @@ void lcd_command(const char command, const char data) {
 	P2OUT |= EN;
 	P2OUT &= ~(SCLK + MOSI + D_C);
 }
+
+void lcd_putc(const char c) {
+	// Print each of the 5 collumns of pixels in the font.
+	for (unsigned int i = 0; i < 5; i++) {
+		lcd_command(0, font[c - 0x20][i]);
+	}
+
+	// Send a blank collumn to separate from the next character.
+	lcd_command(0, 0);
+}
+
+void lcd_clear() {
+	// Fill the whole screen with blank pixels.
+	for (unsigned int i = 0; i < (LCDWIDTH * (LCDHEIGHT / 8)); i++) {
+		lcd_command(0, 0);
+	}
+}
+
 /*
 void writeStringToLCD(const char *string) {
     while(*string) {

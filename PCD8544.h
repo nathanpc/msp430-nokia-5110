@@ -31,11 +31,6 @@
 #define PCD8544_SETBIAS 0b00010000
 #define PCD8544_SETVOP  0b10000000
 
-// Some other stuff?
-#define PCD8544_HPIXELS	84
-#define PCD8544_VBANKS	6
-#define PCD8544_MAXBYTES 504 // PCD8544_HPIXELS * PCD8544_VBANKS
-
 //transform
 #define NONE 0x00
 #define FLIP_H 0x01
@@ -52,7 +47,10 @@ void lcd_init();
 
 void lcd_command(const char command, const char data);
 
+void lcd_putc(const char c);
+void lcd_clear();
 
+// Fonts.
 static const char font[][5] = {		// basic font
 	 {0x00, 0x00, 0x00, 0x00, 0x00} // 20  
 	,{0x00, 0x00, 0x5f, 0x00, 0x00} // 21 !
