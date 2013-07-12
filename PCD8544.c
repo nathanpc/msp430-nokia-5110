@@ -18,12 +18,26 @@
 #define D_C  BIT2
 #define EN   BIT3
 
+/**
+ *  Setup the pins for communication with the LCD driver.
+ */
 void lcd_setup() {
 	P2DIR |= (SCLK + MOSI + D_C + EN);
-	P2OUT &= ~(SCLK + MOSI + D_C + EN);
+
+	P2OUT &= ~(SCLK + MOSI + D_C);
+	P2OUT |= EN;
 }
 
 void lcd_init() {
+}
+
+/**
+ *  Send a command to the LCD controller. (emulating SPI)
+ *
+ *  @param command A command to send.
+ *  @param data Some data to be sent.
+ */
+void lcd_command(const char command, const char data) {
 }
 
 void writeStringToLCD(const char *string) {
